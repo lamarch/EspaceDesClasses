@@ -1,0 +1,47 @@
+﻿@model System.Collections.Generic.List<MaClassePA.Models.ClasseModel>
+
+@{
+    ViewData["Title"] = "Accueil";
+}
+
+<h1>Bienvenue sur l'espace des classes !</h1>
+<br />
+<hr />
+<br />
+<div class="container">
+    <h2>Classes disponibles :</h2>
+    <br />
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Matières</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var classe in Model.Where(c => !c.EstSupprime))
+            {
+            <tr>
+                @{
+                    var fullName = classe.NomComplet;
+                    var count = classe.Matieres.Count(m => !m.EstSupprime);
+                    var link = "/classes?id=" + classe.Id;
+
+                    <td>
+                        <h5>
+                            @fullName
+                        </h5>
+                    </td>
+                    <td>
+                        @count
+                    </td>
+                    <td>
+                        <a href=@link class ="btn btn-primary"><i class="bi bi-eye"></i></a>
+                    </td>
+            }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

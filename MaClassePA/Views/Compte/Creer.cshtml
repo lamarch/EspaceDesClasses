@@ -1,0 +1,39 @@
+﻿@model MaClassePA.Models.Compte.EnregistrerModel
+@{
+    ViewData["Title"] = "Créer un compte";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" action="/compte/creer">
+            <hr />
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <input type="hidden" asp-for="UrlRetour" value=@Model.UrlRetour />
+            <div class="form-group">
+                <label asp-for="Nom"></label>
+                <input asp-for="Nom" class="form-control" />
+                <span asp-validation-for="Nom" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MotDePasse"></label>
+                <input asp-for="MotDePasse" class="form-control" />
+                <span asp-validation-for="MotDePasse" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ConfirmeMDP"></label>
+                <input asp-for="ConfirmeMDP" class="form-control" />
+                <span asp-validation-for="ConfirmeMDP" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+    </div>
+
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

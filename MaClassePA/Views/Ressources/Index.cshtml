@@ -1,0 +1,32 @@
+﻿@model MaClassePA.Models.RessourceModel
+
+@{
+    ViewData["title"] = "Ressources";
+
+    var title = $"{Model.Matiere.Classe.Nom} : {Model.Matiere.Nom} - {Model.Nom}";
+    var back_link_matiere = $"/matieres?id={Model.Matiere.Id}";
+}
+
+
+
+
+@if (Model.Modified != null)
+{
+    <em>Ressource crée le @Model.Created et modifiée le @Model.Modified.</em>
+}
+else
+{
+    <em>Ressource crée le @Model.Created.</em>
+}
+<br />
+<h1>@title</h1>
+
+<a href=@back_link_matiere class="btn btn-primary"><i class="bi bi-arrow-left-circle"></i> Matiere</a>
+
+<br />
+<hr />
+<br />
+
+<div class="container">
+    <p style="white-space: pre-wrap; word-break: break-word">@Model.Contenu</p>
+</div>
