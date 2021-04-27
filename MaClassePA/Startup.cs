@@ -28,7 +28,7 @@ namespace MaClassePA
             services.AddControllersWithViews();
 
             //CLASSE DBCONTEXT
-            services.AddDbContext<ClassesDbContext>(options => options.UseLazyLoadingProxies().UseSqlServer(Configuration.GetConnectionString("MainConnection")));
+            services.AddDbContext<ClassesDbContext>(options => options.UseLazyLoadingProxies().UseSqlServer(Configuration.GetSection("ConnectionStrings")["MainConnection"]));
 
             //...injection
             services.AddScoped<IClassesContext, ClassesDbContext>();
