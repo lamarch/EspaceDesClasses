@@ -42,6 +42,8 @@
         {
             var accounts = configuration.GetSection("Accounts").Get<AccountsModel>();
 
+            if (accounts == null) return;
+
             foreach(var acc in accounts.Passwords)
             {
                 var name = acc.Key;
