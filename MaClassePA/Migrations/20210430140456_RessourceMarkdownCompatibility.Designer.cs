@@ -4,14 +4,16 @@ using MaClassePA.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MaClassePA.Migrations
 {
     [DbContext(typeof(ClassesDbContext))]
-    partial class ClassesDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210430140456_RessourceMarkdownCompatibility")]
+    partial class RessourceMarkdownCompatibility
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

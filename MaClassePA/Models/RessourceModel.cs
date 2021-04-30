@@ -9,6 +9,8 @@ namespace MaClassePA.Models
 
         public string Contenu { get; set; }
 
+        public string Rendu { get; set; }
+
         public virtual MatiereModel Matiere { get; set; }
         public int MatiereId { get; set; }
 
