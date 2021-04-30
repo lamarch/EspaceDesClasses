@@ -53,7 +53,7 @@
             var matiere = context.Matieres.FirstOrDefault(m => m.Id == mid);
             if (matiere == null) return NotFound();
 
-            var ressource = new RessourceModel { Matiere = matiere };
+            var ressource = new RessourceModel { Matiere = matiere, MatiereId = matiere.Id };
 
             return View(ressource);
         }

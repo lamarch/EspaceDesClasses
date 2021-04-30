@@ -1,21 +1,25 @@
 ﻿@model MaClassePA.Models.RessourceModel
 
-@{ViewData["Title"] = "Créer une ressource";}
+@{
+    ViewData["Title"] = "Créer une ressource";
+    var back_link_matiere = $"/matieres?id={Model.MatiereId}";
+}
 
 <h1>@ViewData["Title"]</h1>
 <hr />
 
 <form asp-action="Creer" method="post">
-    <input type="hidden" asp-for="Matiere.Id" name="mid" />
+    <input type="hidden" asp-for="MatiereId" name="mid" />
     <div class="form-group">
         <label asp-for="Nom" class="control-label"></label>
         <input asp-for="Nom" type="text" class="form-control" />
     </div>
     <div class="form-group">
         <label asp-for="Contenu" class="control-label"></label>
-        <textarea asp-for="Contenu" class="form-control" type="text" placeholder="Le contenu du cours" id="res-content"></textarea>
+        <textarea asp-for="Contenu" class="form-control" type="text" style="height:500px" placeholder="Le contenu du cours" id="res-content"></textarea>
     </div>
     <div class="form-group">
+        <a href=@back_link_matiere class="btn btn-primary"><i class="bi bi-arrow-left-circle"></i> Annuler</a>
         <input type="submit" value="Créer" class="btn btn-primary" />
     </div>
 </form>

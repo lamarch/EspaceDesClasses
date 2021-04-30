@@ -59,7 +59,7 @@
 
             var matiere = new MatiereModel
             {
-                Classe = classe
+                ClasseId = classe.Id
             };
 
             return View(matiere);

@@ -1,9 +1,13 @@
 ﻿@model MaClassePA.Models.RessourceModel
 
-@{ViewData["Title"] = "Editer une ressource";}
+@{
+    ViewData["Title"] = "Editer une ressource";
+    var back_link_ressource = $"/ressources?id={Model.Id}";
+}
 
 <h1>@ViewData["Title"]</h1>
 <hr />
+
 <form asp-action="Editer" method="post">
     <input type="hidden" asp-for="Id" />
     <input type="hidden" asp-for="MatiereId" />
@@ -15,9 +19,10 @@
     </div>
     <div class="form-group">
         <label asp-for="Contenu" class="control-label"></label>
-        <textarea asp-for="Contenu" class="form-control" type="text" style="height:100%" id="res-content"></textarea>
+        <textarea asp-for="Contenu" class="form-control" type="text" style="height:500px" id="res-content"></textarea>
     </div>
     <div class="form-group">
+        <a href=@back_link_ressource class="btn btn-primary"><i class="bi bi-arrow-left-circle"></i> Annuler</a>
         <input type="submit" value="Editer" class="btn btn-primary" />
     </div>
 </form>
