@@ -80,7 +80,7 @@
 
                 logger.LogWarning("Admin {Admin} created matière {matiere}.", signInManager.Context.User.Identity.Name, matiere.NomComplet);
 
-                return RedirectToAction("Index", "Classes", new { id = matiere.Classe.Id });
+                return RedirectToAction("Index", "Classes", new { id = matiere.ClasseId });
             }
             return View(matiere);
         }
@@ -126,7 +126,7 @@
         {
             if (id is null) return NotFound();
             var matiere = context.Matieres.FirstOrDefault(m => m.Id == id);
-            int classe_id = matiere.Classe.Id;
+            int classe_id = matiere.ClasseId;
 
             if (matiere is null) return NotFound();
 

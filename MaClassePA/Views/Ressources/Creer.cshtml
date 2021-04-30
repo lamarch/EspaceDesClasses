@@ -10,9 +10,11 @@
 
 <form asp-action="Creer" method="post">
     <input type="hidden" asp-for="MatiereId" name="mid" />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="form-group">
         <label asp-for="Nom" class="control-label"></label>
         <input asp-for="Nom" type="text" class="form-control" />
+        <span asp-validation-for="Nom" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="Contenu" class="control-label"></label>

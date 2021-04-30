@@ -4,14 +4,16 @@ using MaClassePA.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MaClassePA.Migrations
 {
     [DbContext(typeof(ClassesDbContext))]
-    partial class ClassesDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210430210645_ClasseRequiredField")]
+    partial class ClasseRequiredField
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,7 +54,6 @@ namespace MaClassePA.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Nom")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -85,7 +86,6 @@ namespace MaClassePA.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Nom")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Rendu")

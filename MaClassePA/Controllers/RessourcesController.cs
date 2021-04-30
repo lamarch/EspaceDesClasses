@@ -66,6 +66,7 @@
                 var matiere = context.Matieres.FirstOrDefault(m => m.Id == mid);
                 if (matiere == null) return NotFound();
 
+                ressource.Contenu ??= "";
                 ressource.Matiere = matiere;
                 ressource.Rendu = markdownParser.Render(ressource.Contenu);
 
@@ -104,6 +105,7 @@
 
             if (ModelState.IsValid)
             {
+                ressource.Contenu ??= "";
                 ressource.Rendu = markdownParser.Render(ressource.Contenu);
                 context.EditerRessource(ressource);
                 context.Sauvegarder();

@@ -5,7 +5,8 @@
 
     public class ClasseModel : Base
     {
-        public string Nom { get; set; }
+        [Required(ErrorMessage = "Le nom de la classe est requis.")]
+        public string Nom { get; set; } = "Nom par défaut";
 
         public virtual List<MatiereModel> Matieres { get; set; }
 

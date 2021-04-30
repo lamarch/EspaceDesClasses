@@ -5,10 +5,11 @@ namespace MaClassePA.Models
 {
     public class RessourceModel : Base, ITimeTracker
     {
-        public string Nom { get; set; }
+        [Required(ErrorMessage = "Le nom de la ressource est requis.")]
+        public string Nom { get; set; } = "Nom par défaut";
 
         [DataType(DataType.MultilineText)]
-        public string Contenu { get; set; }
+        public string Contenu { get; set; } = "";
 
         public string Rendu { get; set; }
 
