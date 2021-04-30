@@ -18,12 +18,14 @@
         private readonly IClassesContext context;
         private readonly ILogger<MatieresController> logger;
         private readonly SignInManager<IdentityUser> signInManager;
+        private readonly MarkdownParser markdownParser;
 
-        public RessourcesController(IClassesContext _context, ILogger<MatieresController> _logger, SignInManager<IdentityUser> _signInManager)
+        public RessourcesController(IClassesContext _context, ILogger<MatieresController> _logger, SignInManager<IdentityUser> _signInManager, MarkdownParser _markdownParser)
         {
             context = _context;
             logger = _logger;
             signInManager = _signInManager;
+            markdownParser = _markdownParser;
         }
 
         [AllowAnonymous]
@@ -65,6 +67,7 @@
                 if (matiere == null) return NotFound();
 
                 ressource.Matiere = matiere;
+                ressource.Rendu = markdownParser.Render(ressource.Contenu);
 
                 ressource.Matiere.Ressources.Add(ressource);
 
@@ -101,7 +104,7 @@
 
             if (ModelState.IsValid)
             {
-
+                ressource.Rendu = markdownParser.Render(ressource.Contenu);
                 context.EditerRessource(ressource);
                 context.Sauvegarder();
 

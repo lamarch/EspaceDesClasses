@@ -2,6 +2,8 @@ namespace MaClassePA
 {
     using Data;
 
+    using MaClassePA.Services;
+
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;
@@ -24,19 +26,16 @@ namespace MaClassePA
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //MVC SERVICES
+            //MVC Services
             services.AddControllersWithViews();
 
-            //CLASSE DBCONTEXT
+            //ClassesDbContext
             services.AddDbContext<ClassesDbContext>(options => options.UseLazyLoadingProxies().UseSqlServer(Configuration.GetConnectionString("MainConnection")));
 
-            //...injection
-            services.AddScoped<IClassesContext, ClassesDbContext>();
-
-            //USER DBCONTEXT
+            //UserDbContext
             services.AddDbContext<UserDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("MainConnection")));
 
-            //IDENTITY SERVICES
+            //Identity Services
             services.AddIdentity<IdentityUser, IdentityRole>(
                 options => { 
                     options.SignIn.RequireConfirmedAccount = false; 
@@ -47,6 +46,7 @@ namespace MaClassePA
                     options.Password.RequireNonAlphanumeric = false; 
                 }).AddEntityFrameworkStores<UserDbContext>();
 
+            //Cookies (Identity mainly)
             services.ConfigureApplicationCookie(options =>
             {
                 options.Cookie.HttpOnly = true;
@@ -59,6 +59,7 @@ namespace MaClassePA
                 options.SlidingExpiration = true;
             });
 
+            //Authorization Services
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("Superadmin", policy=> policy.RequireRole("Superadmin"));
@@ -67,7 +68,12 @@ namespace MaClassePA
                 options.AddPolicy("Connecte", policy => policy.RequireAuthenticatedUser());
             });
 
+            //Useful ? => we don't use Pages...
             services.AddRazorPages().AddRazorRuntimeCompilation();
+
+            //...services
+            services.AddScoped<IClassesContext, ClassesDbContext>(); // Db Context
+            services.AddScoped<MarkdownParser>(); // Markdown parser
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
