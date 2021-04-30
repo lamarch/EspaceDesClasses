@@ -7,6 +7,7 @@ namespace MaClassePA.Models
     {
         public string Nom { get; set; }
 
+        [DataType(DataType.MultilineText)]
         public string Contenu { get; set; }
 
         public string Rendu { get; set; }
