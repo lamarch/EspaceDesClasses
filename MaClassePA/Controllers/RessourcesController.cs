@@ -31,29 +31,27 @@
         [AllowAnonymous]
         public IActionResult Index(int? id)
         {
+            logger.LogDebug($"GET /Ressources/Index?id={id}");
 
-            if (id == null)
-            {
-                return NotFound();
-            }
-
+            if (id == null) return NotFound(); // Id null
             var ressource = context.Ressources.FirstOrDefault(r => r.Id == id);
-
-            if (ressource == null)
-            {
-                return NotFound();
-            }
+            if (ressource == null) return NotFound(); // Ressource doesn't exist
 
             return View(ressource);
         }
 
         public IActionResult Creer(int? mid)
         {
+            logger.LogDebug($"GET /Ressources/Creer?mid={mid}");
+
             if (mid == null) return NotFound();
             var matiere = context.Matieres.FirstOrDefault(m => m.Id == mid);
             if (matiere == null) return NotFound();
 
-            var ressource = new RessourceModel { Matiere = matiere, MatiereId = matiere.Id };
+            var ressource = new RessourceModel 
+            { 
+                MatiereId = matiere.Id 
+            };
 
             return View(ressource);
         }
@@ -61,82 +59,68 @@
         [HttpPost]
         public IActionResult Creer([Bind("Nom,Contenu")] RessourceModel ressource, int mid)
         {
-            if (ModelState.IsValid)
-            {
-                var matiere = context.Matieres.FirstOrDefault(m => m.Id == mid);
-                if (matiere == null) return NotFound();
+            logger.LogDebug($"POST /Ressources/Creer?mid={mid}");
 
-                ressource.Contenu ??= "";
-                ressource.Matiere = matiere;
-                ressource.Rendu = markdownParser.Render(ressource.Contenu);
+            if (!ModelState.IsValid) return View(ressource); // Invalid inputs
+            var matiere = context.Matieres.FirstOrDefault(m => m.Id == mid);
+            if (matiere == null) return NotFound();
 
-                ressource.Matiere.Ressources.Add(ressource);
+            ressource.Contenu ??= "";
+            ressource.Matiere = matiere;
+            ressource.Rendu = markdownParser.Render(ressource.Contenu);
+            ressource.Matiere.Ressources.Add(ressource);
+            context.Sauvegarder();
 
-                context.Sauvegarder();
+            logger.LogInformation("User {user} created ressource \"{ressource}\".", signInManager.Context.User.Identity.Name, ressource.NomComplet);
 
-                logger.LogWarning("Rédacteur {redacteur} created ressource {ressource}.", signInManager.Context.User.Identity.Name, ressource.NomComplet);
-
-                return RedirectToAction("Index", "Matieres", new { id = ressource.Matiere.Id } );
-            }
-            return View(ressource);
+            return RedirectToAction("Index", "Matieres", new { id = ressource.MatiereId });
         }
 
         public IActionResult Editer(int? id)
         {
-            if (id == null) return NotFound();
+            logger.LogDebug($"GET /Ressources/Editer?id={id}");
+
+            if (id == null) return NotFound(); // Id null
             var res = context.Ressources.FirstOrDefault(r => r.Id == id);
-            if (res == null) return NotFound();
+            if (res == null) return NotFound(); // Ressource doesn't exist
 
             return View(res);
         }
 
         [HttpPost]
-        public IActionResult Editer(int id, [Bind("Id,Nom,Contenu,MatiereId,Created,Modified")] RessourceModel ressource)
+        public IActionResult Editer([Bind("Id,Nom,Contenu,MatiereId,Created,Modified")] RessourceModel ressource, int id)
         {
-            if(id != ressource.Id)
-            {
-                return NotFound();
-            }
+            logger.LogDebug($"POST /Ressources/Editer?id={id}");
 
-            if (!context.Ressources.Any(r => r.Id == id))
-            {
-                return NotFound();
-            }
+            if (id != ressource.Id) return NotFound(); // Bad ressource id
+            if (!context.Ressources.Any(r => r.Id == id)) return NotFound(); // Ressource doesn't exist
+            if (!ModelState.IsValid) return View(ressource); // Invalid inputs
 
-            if (ModelState.IsValid)
-            {
-                ressource.Contenu ??= "";
-                ressource.Rendu = markdownParser.Render(ressource.Contenu);
-                context.EditerRessource(ressource);
-                context.Sauvegarder();
+            ressource.Contenu ??= "";
+            ressource.Rendu = markdownParser.Render(ressource.Contenu);
+            context.EditerRessource(ressource);
+            context.Sauvegarder();
 
-                logger.LogWarning("Rédacteur {redacteur} updated ressource {ressource}.", signInManager.Context.User.Identity.Name, ressource.NomComplet);
+            logger.LogInformation("User {user} updated ressource \"{ressource}\".", signInManager.Context.User.Identity.Name, ressource.NomComplet);
 
-                return RedirectToAction("Index", "Matieres", new { id = ressource.MatiereId });
-            }
-
-            return View(ressource);
+            return RedirectToAction("Index", "Matieres", new { id = ressource.MatiereId });
 
         }
 
         public IActionResult Supprimer(int? id)
         {
-            if (id is null) return NotFound();
-            var ressource = context.Ressources.FirstOrDefault(r => r.Id == id);
-            int matiere_id = ressource.Matiere.Id;
+            logger.LogDebug($"GET /Ressources/Supprimer?id={id}");
 
-            if (ressource == null)
-            {
-                return NotFound();
-            }
+            if (id is null) return NotFound(); // Id null
+            var ressource = context.Ressources.FirstOrDefault(r => r.Id == id);
+            if (ressource == null) return NotFound(); // Ressource doesn't exist
 
             ressource.EstSupprime = true;
-
             context.Sauvegarder();
 
-            logger.LogWarning("Admin {admin} deleted ressource {ressource}.", signInManager.Context.User.Identity.Name, ressource.NomComplet);
+            logger.LogWarning("User {user} deleted ressource \"{ressource}\".", signInManager.Context.User.Identity.Name, ressource.NomComplet);
 
-            return RedirectToAction("Index", "Matieres", new { id = matiere_id });
+            return RedirectToAction("Index", "Matieres", new { id = ressource.MatiereId });
         }
     }
 }

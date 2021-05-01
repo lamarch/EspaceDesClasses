@@ -23,18 +23,24 @@
 
         public IActionResult Index()
         {
+            logger.LogDebug("GET /Home/Index");
+
             return View(context.Classes.ToList());
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
+            logger.LogDebug("GET /Home/Error");
+
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
         [Route("error/{code:int}")]
         public IActionResult Error(int code)
         {
+            logger.LogDebug($"GET /Home/Error/{code}");
+
             return View(code);
         }
     }

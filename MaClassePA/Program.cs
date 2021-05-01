@@ -5,6 +5,7 @@ namespace MaClassePA
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using Microsoft.Extensions.Logging;
 
     using System.Threading.Tasks;
 
@@ -29,6 +30,11 @@ namespace MaClassePA
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                })
+                .ConfigureLogging(logBuilder =>
+                {
+                    logBuilder.ClearProviders();
+                    logBuilder.AddConsole();
                 });
     }
 }

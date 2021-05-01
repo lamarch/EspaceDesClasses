@@ -6,7 +6,9 @@
 
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Logging;
 
     using System.Linq;
     using System.Threading.Tasks;
@@ -16,64 +18,38 @@
     {
         private readonly IClassesContext context;
         private readonly IAuthorizationService authorizationService;
+        private readonly ILogger<ClassesController> logger;
 
-        public ClassesController(IClassesContext _context, IAuthorizationService _authorizationService)
+        public ClassesController(IClassesContext _context, ILogger<ClassesController> _logger, IAuthorizationService _authorizationService, SignInManager<IdentityUser> _signInManager)
         {
             context = _context;
             authorizationService = _authorizationService;
+            logger = _logger;
         }
 
         [AllowAnonymous]
         public async Task<IActionResult> Index(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            logger.LogDebug($"GET /Classes/Index?id={id}");
+
+            if (id == null) return NotFound();
 
             var classe = context.Classes.FirstOrDefault(c => c.Id == id);
 
-            if (classe == null)
-            {
-                return NotFound();
-            }
+            if (classe == null) return NotFound();
 
+            //Authorizations :
+
+            //Update
             ViewBag.CanUpdateMatieres = (await authorizationService.AuthorizeAsync(User, Authorizations.FullMatieres)).Succeeded;
+
+            //Delete
             ViewBag.CanDeleteMatieres = (await authorizationService.AuthorizeAsync(User, Authorizations.FullMatieres)).Succeeded;
+
+            //Create
             ViewBag.CanCreateMatieres = (await authorizationService.AuthorizeAsync(User, Authorizations.FullMatieres)).Succeeded;
 
             return View(classe);
-        }
-
-        [HttpPost]
-        public IActionResult Creer([Bind("Nom")] ClasseModel classe)
-        {
-            if (ModelState.IsValid)
-            {
-                context.AjouterClasse(classe);
-                context.Sauvegarder();
-                return CreatedAtAction(nameof(Index), classe.Id);
-            }
-            return Ok();
-        }
-
-        public IActionResult Supprimer(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var classe = context.Classes.FirstOrDefault(c => c.Id == id);
-
-            if (classe == null)
-            {
-                return NotFound();
-            }
-
-            classe.EstSupprime = true;
-
-            return Ok();
         }
     }
 }
