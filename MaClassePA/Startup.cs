@@ -13,6 +13,8 @@ namespace MaClassePA
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
 
+    using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+
     using System;
 
     public class Startup
@@ -30,11 +32,14 @@ namespace MaClassePA
             //MVC Services
             services.AddControllersWithViews();
 
+            var connectionString = Configuration.GetConnectionString("MainConnection");
+            var serverVersion = ServerVersion.AutoDetect(connectionString);
+
             //ClassesDbContext
-            services.AddDbContext<ClassesDbContext>(options => options.UseLazyLoadingProxies().UseSqlServer(Configuration.GetConnectionString("MainConnection")));
+            services.AddDbContext<ClassesDbContext>(options => options.UseLazyLoadingProxies().UseMySql(connectionString, serverVersion));
 
             //UserDbContext
-            services.AddDbContext<UserDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("MainConnection")));
+            services.AddDbContext<UserDbContext>(options => options.UseMySql(connectionString, serverVersion));
 
             //Identity Services
             services.AddIdentity<IdentityUser, IdentityRole>(
