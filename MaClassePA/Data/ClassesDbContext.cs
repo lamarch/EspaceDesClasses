@@ -38,15 +38,15 @@
 
         public override int SaveChanges()
         {
-            foreach(var entityEntry in ChangeTracker.Entries())
+            foreach (var entityEntry in ChangeTracker.Entries())
             {
-                if(entityEntry.Entity is ITimeTracker tracker)
+                if (entityEntry.Entity is ITimeTracker tracker)
                 {
-                    if(entityEntry.State == EntityState.Added)
+                    if (entityEntry.State == EntityState.Added)
                     {
                         tracker.Modified = tracker.Created = DateTime.Now;
                     }
-                    else if(entityEntry.State == EntityState.Modified)
+                    else if (entityEntry.State == EntityState.Modified)
                     {
                         tracker.Modified = DateTime.Now;
                     }

@@ -13,8 +13,6 @@ namespace MaClassePA
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
 
-    using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
-
     using System;
 
     public class Startup
@@ -43,13 +41,14 @@ namespace MaClassePA
 
             //Identity Services
             services.AddIdentity<IdentityUser, IdentityRole>(
-                options => { 
-                    options.SignIn.RequireConfirmedAccount = false; 
-                    options.Password.RequireDigit = false; 
-                    options.Password.RequireLowercase = false; 
-                    options.Password.RequiredLength = 4; 
-                    options.Password.RequireUppercase = false; 
-                    options.Password.RequireNonAlphanumeric = false; 
+                options =>
+                {
+                    options.SignIn.RequireConfirmedAccount = false;
+                    options.Password.RequireDigit = false;
+                    options.Password.RequireLowercase = false;
+                    options.Password.RequiredLength = 4;
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequireNonAlphanumeric = false;
                 }).AddEntityFrameworkStores<UserDbContext>();
 
             //Cookies (Identity mainly)
@@ -68,7 +67,7 @@ namespace MaClassePA
             //Authorization Services
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("Superadmin", policy=> policy.RequireRole("Superadmin"));
+                options.AddPolicy("Superadmin", policy => policy.RequireRole("Superadmin"));
                 options.AddPolicy("Admin", policy => policy.RequireRole("Superadmin", "Admin"));
                 options.AddPolicy("Redacteur", policy => policy.RequireRole("Superadmin", "Admin", "Redacteur"));
                 options.AddPolicy("Connecte", policy => policy.RequireAuthenticatedUser());

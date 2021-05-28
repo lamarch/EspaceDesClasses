@@ -3,7 +3,6 @@
     using MaClassePA.Data;
     using MaClassePA.Models;
 
-    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
 

@@ -2,7 +2,6 @@
 
 namespace MaClassePA.Controllers
 {
-    using MaClassePA.Extensions;
     using MaClassePA.Models.Compte;
 
     using Microsoft.AspNetCore.Identity;
@@ -10,8 +9,6 @@ namespace MaClassePA.Controllers
     using Microsoft.Extensions.Logging;
 
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
 
     public class CompteController : Controller
@@ -64,7 +61,7 @@ namespace MaClassePA.Controllers
                 }
                 return LocalRedirect(Uri.UnescapeDataString(entree.UrlRetour ?? "/"));
             }
-            
+
             ModelState.AddModelError(string.Empty, "Identifiants incorrects.");
             return View(entree);
         }

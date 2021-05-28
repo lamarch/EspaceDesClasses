@@ -2,7 +2,6 @@
 {
     using MaClassePA.Extensions;
     using MaClassePA.Models;
-    using MaClassePA.Models.Compte;
     using MaClassePA.Models.Configuration;
 
     using Microsoft.AspNetCore.Identity;
@@ -35,7 +34,7 @@
                 await InitializeAdmins(userManager, configuration);
             }
 
-            
+
         }
 
         private static async Task InitializeAdmins(UserManager<IdentityUser> userManager, IConfiguration configuration)
@@ -44,7 +43,7 @@
 
             if (accounts == null) return;
 
-            foreach(var acc in accounts.Passwords)
+            foreach (var acc in accounts.Passwords)
             {
                 var name = acc.Key;
                 var password = acc.Value;

@@ -6,7 +6,7 @@
 
     public class UserDbContext : IdentityDbContext<IdentityUser, IdentityRole, string>
     {
-        public UserDbContext(DbContextOptions<UserDbContext> options) : base(options) 
+        public UserDbContext(DbContextOptions<UserDbContext> options) : base(options)
         {
             Database.Migrate();
         }

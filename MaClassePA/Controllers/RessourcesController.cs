@@ -7,7 +7,6 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
 
     using System.Linq;
@@ -48,9 +47,9 @@
             var matiere = context.Matieres.FirstOrDefault(m => m.Id == mid);
             if (matiere == null) return NotFound();
 
-            var ressource = new RessourceModel 
-            { 
-                MatiereId = matiere.Id 
+            var ressource = new RessourceModel
+            {
+                MatiereId = matiere.Id
             };
 
             return View(ressource);
